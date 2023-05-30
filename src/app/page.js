@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <div className="min-h-screen min-w-[512px] bg-slate-50">
+      <div className="min-h-screen max-w-[512px] bg-slate-50">
         <div className="flex flex-col min-h-screen items-center justify-between p-8">
           <Image
             src="Logo.svg"
