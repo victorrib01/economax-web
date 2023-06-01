@@ -1,7 +1,5 @@
-"use client";
 import { Inter } from "next/font/google";
-import Link from "next/link";
-import { useState } from "react";
+import Menu from "./_components/Menu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,16 +9,6 @@ export const metadata = {
 };
 
 export default function PrivateLayout({ children }) {
-  const [currentPage, setCurrentPage] = useState("home");
-  const handleItemClick = (page) => {
-    setCurrentPage(page);
-  };
-  const menuItems = [
-    ["home", "Home"],
-    ["categories", "Categorias"],
-    ["registry", "Lista"],
-    ["profile", "Perfil"],
-  ];
   return (
     <html lang="pt-br">
       <body className={inter.className}>
@@ -32,22 +20,7 @@ export default function PrivateLayout({ children }) {
                 "
             >
               <div className="h-[92%] w-full">{children}</div>
-              <div className="flex flex-row border-t min-w-full items-center justify-between h-[8%]">
-                {menuItems.map((item) => (
-                  <Link
-                    href={`/${item[0]}`}
-                    key={item}
-                    className={`p-2 ${
-                      currentPage === item[0]
-                        ? "bg-blue-500 text-white rounded"
-                        : ""
-                    }`}
-                    onClick={() => handleItemClick(item[0])}
-                  >
-                    {item[1]}
-                  </Link>
-                ))}
-              </div>
+              <Menu />
             </div>
           </main>
         </div>
