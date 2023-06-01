@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import Menu from "./_components/Menu";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -9,6 +10,9 @@ export const metadata = {
 };
 
 export default function PrivateLayout({ children }) {
+  const nextCookies = cookies();
+
+  const loginCookie = nextCookies.get("login");
   return (
     <html lang="pt-br">
       <body className={inter.className}>
@@ -20,7 +24,7 @@ export default function PrivateLayout({ children }) {
                 "
             >
               <div className="h-[92%] w-full">{children}</div>
-              <Menu />
+              <Menu loginCookie={loginCookie} />
             </div>
           </main>
         </div>
