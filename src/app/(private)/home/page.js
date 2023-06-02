@@ -5,9 +5,12 @@ import LastRegisters from "./_components/LastRegisters";
 export default function HomePage() {
   return (
     <>
-      <p>Home</p>
-      {/* <RegisterForm />
-      <LastRegisters /> */}
+      <div className="h-[40%]">
+        <RegisterForm />
+      </div>
+      <div className="h-[60%]">
+        <LastRegisters />
+      </div>
     </>
   );
 }
