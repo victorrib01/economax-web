@@ -21,7 +21,7 @@ export default function Menu({ loginCookie }) {
     ["profile", "Perfil"],
   ];
   useEffect(() => {
-    setCurrentPage(pathname.replace("/", ""));
+    setCurrentPage(pathname.split("/")[1]);
   }, [pathname]);
 
   useEffect(() => {

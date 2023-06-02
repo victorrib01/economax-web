@@ -1,8 +1,6 @@
-import { Inter } from "next/font/google";
+import BackButton from "@/components/BackButton";
 import Menu from "./_components/Menu";
 import { cookies } from "next/headers";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Economax Web",
@@ -14,21 +12,14 @@ export default function PrivateLayout({ children }) {
 
   const loginCookie = nextCookies.get("login");
   return (
-    <html lang="pt-br">
-      <body className={inter.className}>
-        <div className="flex items-center justify-center max-w-full">
-          <main className="min-h-screen h-screen w-full max-w-[512px] p-8 bg-slate-50">
-            <div
-              className="
-                flex flex-col items-center justify-between h-full
-                "
-            >
-              <div className="h-[92%] w-full">{children}</div>
-              <Menu loginCookie={loginCookie} />
-            </div>
-          </main>
+    <div className="flex items-center justify-center max-w-full">
+      <main className="min-h-screen h-screen w-full max-w-[512px] p-8 bg-slate-50">
+        <div className="flex flex-col items-center justify-between h-full">
+          <BackButton />
+          <div className="h-[92%] w-full overflow-y-hidden">{children}</div>
+          <Menu loginCookie={loginCookie} />
         </div>
-      </body>
-    </html>
+      </main>
+    </div>
   );
 }
