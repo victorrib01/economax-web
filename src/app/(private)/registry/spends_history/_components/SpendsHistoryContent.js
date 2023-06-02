@@ -1,5 +1,5 @@
 "use client";
-import SelectComponent from "@/components/Dropdown";
+import SelectComponent from "@/components/Select";
 import { useState } from "react";
 
 export default function SpendsHistoryContent() {
