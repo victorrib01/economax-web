@@ -23,8 +23,11 @@ export default function SpendsHistoryContent() {
       <div className="my-2 flex-grow overflow-y-auto">
         <p>{value ? `Últimos ${value} dias` : "Último mês"}</p>
         <div id="list">
-          {results.map(() => (
-            <div className="p-10 my-2 bg-white w-full flex items-center justify-between cursor-pointer">
+          {results.map((item) => (
+            <div
+              key={item}
+              className="p-10 my-2 bg-white w-full flex items-center justify-between cursor-pointer"
+            >
               <p>bar</p>
               <p>R$ 51,00</p>
             </div>
