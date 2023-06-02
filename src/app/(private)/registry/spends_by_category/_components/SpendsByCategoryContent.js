@@ -5,23 +5,27 @@ import { useState } from "react";
 export default function SpendsByCategoryContent() {
   const [value, setValue] = useState("");
   const [results, setResults] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
   const options = [
     { value: "30", label: "30 dias" },
     { value: "90", label: "90 dias" },
     { value: "", label: "Último mês" },
   ];
-  const handleSelectChange = (event) => {
-    const selectedValue = event.target.value;
-    setValue(selectedValue);
-  };
+
+  console.log(value);
 
   return (
     <div className="h-full flex flex-col">
       <div className="h-[10%]">
-        <SelectComponent options={options} onChange={handleSelectChange} />
+        <SelectComponent
+          options={options}
+          onChange={setValue}
+          defaultValue={value}
+          placeholder="Selecione algum período"
+        />
       </div>
       <div className="my-2 flex-grow overflow-y-auto">
-        <p>{value ? `Últimos ${value} dias` : "Último mês"}</p>
+        <p>{value.value ? `Últimos ${value.value} dias` : "Último mês"}</p>
         <div id="list">
           {results.map((item) => (
             <div

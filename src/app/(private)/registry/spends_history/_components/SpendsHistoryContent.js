@@ -10,18 +10,19 @@ export default function SpendsHistoryContent() {
     { value: "90", label: "90 dias" },
     { value: "", label: "Último mês" },
   ];
-  const handleSelectChange = (event) => {
-    const selectedValue = event.target.value;
-    setValue(selectedValue);
-  };
 
   return (
     <div className="h-full flex flex-col">
       <div className="h-[10%]">
-        <SelectComponent options={options} onChange={handleSelectChange} />
+        <SelectComponent
+          options={options}
+          onChange={setValue}
+          defaultValue={value}
+          placeholder="Selecione algum período"
+        />
       </div>
       <div className="my-2 flex-grow overflow-y-auto">
-        <p>{value ? `Últimos ${value} dias` : "Último mês"}</p>
+        <p>{value.value ? `Últimos ${value.value} dias` : "Último mês"}</p>
         <div id="list">
           {results.map((item) => (
             <div
