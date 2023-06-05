@@ -27,24 +27,28 @@ export default function CategoriesContent() {
     { id: 4, name: "categoria 4" },
   ]);
 
-  function filterCategories() {
-    const updatedCategories = allCategories
-      .map((categoryItem) => {
-        // Verificar se a categoria está na lista de registeredCategories
-        const isRegistered = registeredCategories.some(
-          (userCategoryItem) => userCategoryItem.name === categoryItem.name
-        );
+  // const filterCategories = useCallback(() => {
+  //   const updatedCategories = allCategories
+  //     .map((categoryItem) => {
+  //       // Verificar se a categoria está na lista de registeredCategories
+  //       const isRegistered = registeredCategories.some(
+  //         (userCategoryItem) => userCategoryItem.name === categoryItem.name
+  //       );
 
-        // Retornar um novo objeto com a propriedade "registered" atualizada
-        return {
-          ...categoryItem,
-          registered: isRegistered,
-        };
-      })
-      .sort((a, b) => a.registered - b.registered);
+  //       // Retornar um novo objeto com a propriedade "registered" atualizada
+  //       return {
+  //         ...categoryItem,
+  //         registered: isRegistered,
+  //       };
+  //     })
+  //     .sort((a, b) => a.registered - b.registered);
 
-    setAllCategories(updatedCategories);
-  }
+  //   setAllCategories(updatedCategories);
+  // }, [allCategories, registeredCategories]);
+
+  // useEffect(() => {
+  //   filterCategories();
+  // }, [filterCategories]);
 
   const filteredCategories = allCategories.filter((item) => {
     if (typeof input === "string") {
@@ -82,8 +86,27 @@ export default function CategoriesContent() {
     [filteredCategories, selectedItems]
   );
   useEffect(() => {
+    function filterCategories() {
+      const updatedCategories = allCategories
+        .map((categoryItem) => {
+          // Verificar se a categoria está na lista de registeredCategories
+          const isRegistered = registeredCategories.some(
+            (userCategoryItem) => userCategoryItem.name === categoryItem.name
+          );
+
+          // Retornar um novo objeto com a propriedade "registered" atualizada
+          return {
+            ...categoryItem,
+            registered: isRegistered,
+          };
+        })
+        .sort((a, b) => a.registered - b.registered);
+
+      setAllCategories(updatedCategories);
+    }
+
     filterCategories();
-  }, [filterCategories]);
+  }, [allCategories, registeredCategories]);
 
   return (
     <div className="flex flex-col h-full">
