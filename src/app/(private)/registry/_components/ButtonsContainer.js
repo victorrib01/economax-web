@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-export default function Buttons() {
+export default function ButtonsContainer() {
   const router = useRouter();
   return (
     <div className="h-[50%] flex flex-col justify-between items-center py-16">

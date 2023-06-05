@@ -1,11 +1,11 @@
-import Buttons from "./Buttons";
+import ButtonsContainer from "./ButtonsContainer";
 import Resume from "./Resume";
 
 export default function RegistryContent() {
   return (
     <div className="h-full ">
       <Resume />
-      <Buttons />
+      <ButtonsContainer />
     </div>
   );
 }
