@@ -6,9 +6,13 @@ import CategorySelect from "./CategorySelect";
 import RegisteredCategory from "./RegisteredCategory";
 import { useState } from "react";
 import { useEffect } from "react";
+import React from "react";
+import AddCategory from "./AddCategory";
+import { useCallback } from "react";
 
 export default function CategoriesContent() {
   const [input, setInput] = useState("");
+  const [selectedItems, setSelectedItems] = useState([]);
   const [allCategories, setAllCategories] = useState([
     { id: 1, name: "categoria 1" },
     { id: 2, name: "categoria 2" },
@@ -55,6 +59,28 @@ export default function CategoriesContent() {
     return true; // Retorna true para incluir todos os itens se input não for uma string
   });
 
+  const toggleItem = useCallback(
+    (itemId) => {
+      const itemIndex = selectedItems.findIndex(
+        (item) => item.id === itemId.id
+      );
+      if (itemIndex !== -1) {
+        const updatedItems = [...selectedItems];
+        updatedItems.splice(itemIndex, 1);
+        setSelectedItems(updatedItems);
+      } else {
+        const newItem = filteredCategories.find(
+          (item) => item.id === itemId.id
+        );
+        if (newItem) {
+          setSelectedItems([...selectedItems, newItem]);
+        }
+      }
+
+      setCategory("");
+    },
+    [filteredCategories, selectedItems]
+  );
   useEffect(() => {
     filterCategories();
   }, []);
@@ -69,11 +95,51 @@ export default function CategoriesContent() {
             placeholder={"categoria"}
           />
         </div>
-        <div className="flex flex-col my-2 flex-grow overflow-y-auto h-[50%]">
-          {filteredCategories.map((item) => (
-            <CategorySelect category={item} />
-          ))}
+        <div
+          id="lista"
+          className="flex flex-col my-2 flex-grow overflow-y-auto h-[50%]"
+        >
+          {filteredCategories.length === 0 ? (
+            <div>
+              <AddCategory />
+            </div>
+          ) : (
+            filteredCategories.map((item, index) => {
+              const isSelected =
+                selectedItems.findIndex(
+                  (selectedItem) => selectedItem.id === item.id
+                ) !== -1;
+              if (
+                allCategories.filter((category) => category.name === input)
+                  .length === 0 &&
+                input.length > 0 &&
+                !allCategories.filter(
+                  (category) => category.name === input.trim()
+                ).length
+              ) {
+                return (
+                  <React.Fragment key={item.id}>
+                    {index === 0 && <AddCategory />}
+                    <CategorySelect
+                      category={item}
+                      isSelected={isSelected}
+                      toggleItem={toggleItem}
+                    />
+                  </React.Fragment>
+                );
+              }
+              return (
+                <CategorySelect
+                  key={item.id}
+                  category={item}
+                  isSelected={isSelected}
+                  toggleItem={toggleItem}
+                />
+              );
+            })
+          )}
         </div>
+
         <div className="h-[10%]">
           <Button title={"Cadastrar"} />
           <Separator />
