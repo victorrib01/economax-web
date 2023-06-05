@@ -83,7 +83,7 @@ export default function CategoriesContent() {
   );
   useEffect(() => {
     filterCategories();
-  }, []);
+  }, [filterCategories]);
 
   return (
     <div className="flex flex-col h-full">
@@ -149,7 +149,7 @@ export default function CategoriesContent() {
         <p className="h-[5%]">Categorias cadastradas</p>
         <div className="h-[95%] overflow-y-auto">
           {registeredCategories.map((item) => (
-            <RegisteredCategory category={item} />
+            <RegisteredCategory key={item.id} category={item} />
           ))}
         </div>
       </div>
