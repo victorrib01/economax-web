@@ -106,7 +106,7 @@ export default function CategoriesContent() {
     }
 
     filterCategories();
-  }, [allCategories, registeredCategories]);
+  }, [registeredCategories]);
 
   return (
     <div className="flex flex-col h-full">
