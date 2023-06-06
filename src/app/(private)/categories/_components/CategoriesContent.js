@@ -63,28 +63,35 @@ export default function CategoriesContent() {
     return true; // Retorna true para incluir todos os itens se input não for uma string
   });
 
-  const toggleItem = useCallback(
-    (itemId) => {
-      const itemIndex = selectedItems.findIndex(
-        (item) => item.id === itemId.id
-      );
-      if (itemIndex !== -1) {
-        const updatedItems = [...selectedItems];
-        updatedItems.splice(itemIndex, 1);
-        setSelectedItems(updatedItems);
-      } else {
-        const newItem = filteredCategories.find(
-          (item) => item.id === itemId.id
-        );
-        if (newItem) {
-          setSelectedItems([...selectedItems, newItem]);
-        }
-      }
+  // Função para alternar a seleção de um item
+  const toggleItem = (itemId) => {
+    // Encontrar o índice do item selecionado na lista de seleção
+    const itemIndex = selectedItems.findIndex((item) => item.id === itemId.id);
+    // Se o item estiver selecionado (índice diferente de -1)
+    if (itemIndex !== -1) {
+      // Criar uma cópia da lista de seleção atual
+      const updatedItems = [...selectedItems];
+      // Remover o item da lista de seleção
+      setSelectedItems(updatedItems);
+      // Atualizar a lista de seleção
+      updatedItems.splice(itemIndex, 1);
+    }
+    // Caso contrário, se o item não estiver selecionado
+    else {
+      // Encontrar o objeto do item selecionado na lista de categorias filtradas
+      const newItem = filteredCategories.find((item) => item.id === itemId.id);
 
-      setCategory("");
-    },
-    [filteredCategories, selectedItems]
-  );
+      // Se o objeto do item selecionado existir
+      if (newItem) {
+        // Adicionar o item à lista de seleção
+        setSelectedItems([...selectedItems, newItem]);
+      }
+    }
+
+    // Limpar o valor de input
+    setInput("");
+  };
+
   useEffect(() => {
     function filterCategories() {
       const updatedCategories = allCategories

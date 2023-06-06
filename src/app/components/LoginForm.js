@@ -15,9 +15,9 @@ export function LoginForm({ loginCookie }) {
   const loginCookieParse = JSON.parse(loginCookie?.value || null);
 
   const [form, setForm] = useState(initialState);
+
   const handleChange = (e) => {
     const { placeholder, value } = e.target;
-    console.log(placeholder, value);
     if (placeholder === "Password") {
       setForm((prevState) => ({ ...prevState, password: value }));
     } else {
@@ -26,9 +26,21 @@ export function LoginForm({ loginCookie }) {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const response = await fetch(`${process.env.API_URL}/login`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        usuario: form.username,
+        senha: form.password,
+      }),
+    });
+    const { id_usuario } = await response.json();
 
     try {
-      setLoginCookie(form);
+      setLoginCookie({ user: form.username, id: id_usuario });
       router.refresh();
     } catch (error) {
       console.log(error);
