@@ -1,16 +1,11 @@
-import Container from "@/components/Container";
-import RegisterForm from "./_components/RegisterForm";
-import LastRegisters from "./_components/LastRegisters";
+import { cookies } from "next/headers";
+import HomeContent from "./_components/HomeContent";
 
 export default function HomePage() {
-  return (
-    <>
-      <div className="h-[40%]">
-        <RegisterForm />
-      </div>
-      <div className="h-[60%]">
-        <LastRegisters />
-      </div>
-    </>
-  );
+  const nextCookies = cookies();
+
+  const loginCookie = nextCookies.get("login");
+  const loginCookieParse = JSON.parse(loginCookie?.value || null);
+
+  return <HomeContent loginCookie={loginCookieParse} />;
 }

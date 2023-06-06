@@ -8,47 +8,24 @@ import { useState } from "react";
 import { useEffect } from "react";
 import React from "react";
 import AddCategory from "./AddCategory";
-import { useCallback } from "react";
+import { getAllCategories, getUserCategories } from "@/services/category";
 
-export default function CategoriesContent() {
+export default function CategoriesContent({ loginCookie }) {
+  const loginCookieParse = JSON.parse(loginCookie?.value || null);
+
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(true);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [allCategories, setAllCategories] = useState([
-    { id: 1, name: "categoria 1" },
-    { id: 2, name: "categoria 2" },
-    { id: 3, name: "categoria 3" },
-    { id: 4, name: "categoria 4" },
-    { id: 5, name: "categoria 5" },
-    { id: 6, name: "categoria 6" },
-  ]);
-  const [registeredCategories, setRegisteredCategories] = useState([
-    { id: 1, name: "categoria 1" },
-    { id: 3, name: "categoria 3" },
-    { id: 4, name: "categoria 4" },
-  ]);
+  const [allCategories, setAllCategories] = useState([]);
+  const [registeredCategories, setRegisteredCategories] = useState([]);
 
-  // const filterCategories = useCallback(() => {
-  //   const updatedCategories = allCategories
-  //     .map((categoryItem) => {
-  //       // Verificar se a categoria está na lista de registeredCategories
-  //       const isRegistered = registeredCategories.some(
-  //         (userCategoryItem) => userCategoryItem.name === categoryItem.name
-  //       );
+  const fetchAllCategories = async () =>
+    await getAllCategories(setAllCategories);
 
-  //       // Retornar um novo objeto com a propriedade "registered" atualizada
-  //       return {
-  //         ...categoryItem,
-  //         registered: isRegistered,
-  //       };
-  //     })
-  //     .sort((a, b) => a.registered - b.registered);
-
-  //   setAllCategories(updatedCategories);
-  // }, [allCategories, registeredCategories]);
-
-  // useEffect(() => {
-  //   filterCategories();
-  // }, [filterCategories]);
+  const fetchUserCategories = async () => {
+    await getUserCategories(setRegisteredCategories, loginCookieParse.id);
+    setLoading(false);
+  };
 
   const filteredCategories = allCategories.filter((item) => {
     if (typeof input === "string") {
@@ -115,6 +92,11 @@ export default function CategoriesContent() {
     filterCategories();
   }, [registeredCategories]);
 
+  useEffect(() => {
+    fetchAllCategories();
+    fetchUserCategories();
+  }, []);
+
   return (
     <div className="flex flex-col h-full">
       <div className="h-[40%]">
@@ -129,7 +111,11 @@ export default function CategoriesContent() {
           id="lista"
           className="flex flex-col my-2 flex-grow overflow-y-auto h-[50%]"
         >
-          {filteredCategories.length === 0 ? (
+          {loading ? (
+            <div>
+              <p>loading</p>
+            </div>
+          ) : filteredCategories.length === 0 ? (
             <div>
               <AddCategory />
             </div>
@@ -178,9 +164,19 @@ export default function CategoriesContent() {
       <div className="h-[60%]">
         <p className="h-[5%]">Categorias cadastradas</p>
         <div className="h-[95%] overflow-y-auto">
-          {registeredCategories.map((item) => (
-            <RegisteredCategory key={item.id} category={item} />
-          ))}
+          {loading ? (
+            <div>
+              <p>loading</p>
+            </div>
+          ) : registeredCategories.length > 0 ? (
+            registeredCategories.map((item) => (
+              <RegisteredCategory key={item.id} category={item} />
+            ))
+          ) : (
+            <div>
+              <p>Sem categorias cadastradas até o momento</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
