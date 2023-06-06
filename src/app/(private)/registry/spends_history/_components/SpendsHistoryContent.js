@@ -55,8 +55,10 @@ export default function SpendsHistoryContent() {
   }
 
   useEffect(() => {
-    getLast5Records();
-  }, [value]);
+    if (cookies) {
+      getLast5Records();
+    }
+  }, [value, cookies]);
 
   return (
     <div className="h-full flex flex-col">

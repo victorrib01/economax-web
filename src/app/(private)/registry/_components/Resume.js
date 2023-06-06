@@ -41,9 +41,11 @@ export default function Resume() {
   }
 
   useEffect(() => {
-    getToday();
-    getLastMonth();
-  }, []);
+    if (cookies) {
+      getToday();
+      getLastMonth();
+    }
+  }, [cookies]);
   return (
     <div className="h-[50%] flex flex-col justify-center items-center border">
       <p>Gastos do mês: {formatarCentavosParaReal(month)}</p>

@@ -37,8 +37,10 @@ export default function SpendsByCategoryContent() {
   }
 
   useEffect(() => {
-    getData();
-  }, [value]);
+    if (cookies) {
+      getData();
+    }
+  }, [value, cookies]);
 
   return (
     <div className="h-full flex flex-col">

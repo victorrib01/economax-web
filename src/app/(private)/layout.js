@@ -12,5 +12,5 @@ export default function PrivateLayout({ children }) {
   const loginCookie = nextCookies.get("login");
   const loginCookieParse = JSON.parse(loginCookie?.value || null);
 
-  return <LayoutPage loginCookie={loginCookieParse} children={children} />;
+  return <LayoutPage loginCookie={loginCookieParse}>{children}</LayoutPage>;
 }
