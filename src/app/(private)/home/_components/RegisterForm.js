@@ -1,12 +1,15 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import SelectComponent from "@/components/Select";
 import api from "@/services/api";
 import { convertToCents } from "@/utils/formatters/convertToCents";
-import { useEffect, useState } from "react";
+import { useAuth } from "@/contexts/auth";
+import { getUserCategories } from "@/services/category";
 
-export default function RegisterForm({ loginCookie, getLast5Records }) {
+export default function RegisterForm({ getLast5Records }) {
+  const { cookies } = useAuth();
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState(null);
 
@@ -27,7 +30,6 @@ export default function RegisterForm({ loginCookie, getLast5Records }) {
     const inputValue = e.target.value;
     const formatted = formatValue(inputValue);
     setValue(formatted);
-    console.log(formatted);
     // setFormattedValue(formatted);
   };
 
@@ -37,8 +39,8 @@ export default function RegisterForm({ loginCookie, getLast5Records }) {
     try {
       setLoading(true);
       const response = await api.post("/cadastro_gastos_usuario", {
-        id_usuario: loginCookie.id,
-        usuario: loginCookie.user,
+        id_usuario: cookies.id,
+        usuario: cookies.user,
         gastos: [
           {
             id_categoria: category.value,
@@ -48,11 +50,11 @@ export default function RegisterForm({ loginCookie, getLast5Records }) {
         ],
       });
       if (response.data.message === "Gastos inseridos com sucesso!") {
-        getLast5Records();
         alert("Gasto inserido com sucesso!");
         setValue("");
         setCategory("");
         setDescription("");
+        setTimeout(() => getLast5Records(), 200);
       }
       setLoading(false);
     } catch (error) {
@@ -60,23 +62,10 @@ export default function RegisterForm({ loginCookie, getLast5Records }) {
       console.error("handleRegister", error);
     }
   }
-
-  async function getUserCategories() {
+  async function getCategories() {
     setLoading(true);
     try {
-      const response = await api.post(
-        "/busca_categorias_despesas_geral_usuario",
-        {
-          id_usuario: loginCookie.id,
-        }
-      );
-      const formatted = response.data.map((item) => {
-        return {
-          label: item.categoria,
-          value: item.id,
-        };
-      });
-      setOptions(formatted);
+      await getUserCategories(setOptions, cookies.id, true);
       setLoading(false);
       return Promise.resolve();
     } catch (err) {
@@ -87,19 +76,25 @@ export default function RegisterForm({ loginCookie, getLast5Records }) {
   }
 
   useEffect(() => {
-    getUserCategories();
-  }, []);
+    if (cookies) getCategories();
+  }, [cookies]);
+
+  useEffect(() => {
+    console.log(options);
+  }, [options]);
 
   return (
     <div className="flex flex-col items-center justify-between h-full py-1">
       <Input
         placeholder={"valor"}
+        type={"number"}
         onChange={(e) => handleInputChange(e)}
         value={value}
       />
       <SelectComponent
-        isLoading={loading}
-        isDisabled={loading}
+        id={"category-select"}
+        // isLoading={loading}
+        // isDisabled={loading}
         options={options}
         onChange={setCategory}
         defaultValue={category}

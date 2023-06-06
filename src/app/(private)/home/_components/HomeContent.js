@@ -3,8 +3,10 @@ import api from "@/services/api";
 import LastRegisters from "./LastRegisters";
 import RegisterForm from "./RegisterForm";
 import { useState } from "react";
+import { useAuth } from "@/contexts/auth";
 
-export default function HomeContent({ loginCookie }) {
+export default function HomeContent() {
+  const { cookies } = useAuth();
   const [loading, setLoading] = useState(false);
   function parseDate(dateString) {
     const [date, time] = dateString.split(" ");
@@ -25,8 +27,8 @@ export default function HomeContent({ loginCookie }) {
     setLoading(true);
     try {
       const response = await api.post("/ultimas_despesas_usuario", {
-        id_usuario: loginCookie.id,
-        usuario: loginCookie.user,
+        id_usuario: cookies.id,
+        usuario: cookies.user,
         dias: "2",
       });
 
@@ -51,14 +53,11 @@ export default function HomeContent({ loginCookie }) {
   return (
     <>
       <div className="h-[40%]">
-        <RegisterForm
-          loginCookie={loginCookie}
-          getLast5Records={getLast5Records}
-        />
+        <RegisterForm getLast5Records={getLast5Records} />
       </div>
       <div className="h-[60%]">
         <LastRegisters
-          loginCookie={loginCookie}
+          cookies={cookies}
           getLast5Records={getLast5Records}
           loading={loading}
         />

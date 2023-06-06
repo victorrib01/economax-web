@@ -13,6 +13,7 @@ import { getAllCategories, getUserCategories } from "@/services/category";
 export default function CategoriesContent({ loginCookie }) {
   const loginCookieParse = JSON.parse(loginCookie?.value || null);
 
+  const [collapse, setCollapse] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -99,7 +100,7 @@ export default function CategoriesContent({ loginCookie }) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="h-[40%]">
+      <div className={collapse ? "h-[90%]" : "h-[40%]"}>
         <div className="h-[20%]">
           <Input
             value={input}
@@ -161,9 +162,11 @@ export default function CategoriesContent({ loginCookie }) {
           <Separator />
         </div>
       </div>
-      <div className="h-[60%]">
-        <p className="h-[5%]">Categorias cadastradas</p>
-        <div className="h-[95%] overflow-y-auto">
+      <div className={collapse ? "h-[10%]" : "h-[60%]"}>
+        <p className="h-[5%]" onClick={() => setCollapse(!collapse)}>
+          Categorias cadastradas
+        </p>
+        <div className={collapse ? "hidden" : "h-[95%] overflow-y-auto"}>
           {loading ? (
             <div>
               <p>loading</p>

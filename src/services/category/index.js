@@ -15,7 +15,7 @@ export async function getAllCategories(setState) {
   }
 }
 
-export async function getUserCategories(setState, id) {
+export async function getUserCategories(setState, id, label = false) {
   try {
     const response = await api.post(
       "/busca_categorias_despesas_geral_usuario",
@@ -24,6 +24,17 @@ export async function getUserCategories(setState, id) {
       }
     );
 
+    if (label) {
+      setState(
+        response.data.map((item) => {
+          return {
+            id: item.id,
+            label: item.categoria,
+          };
+        })
+      );
+      return;
+    }
     setState(
       response.data.map((item) => {
         return {

@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 export default function ProfileContent({ loginCookie }) {
   const router = useRouter();
   const loginCookieParse = JSON.parse(loginCookie?.value || null);
-  console.log(loginCookieParse);
   function signOut() {
     clearLoginCookie();
     router.push("/");

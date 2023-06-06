@@ -43,7 +43,7 @@ export function LoginForm({ loginCookie }) {
       setLoginCookie({ user: form.username, id: id_usuario });
       router.refresh();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     setForm(initialState);

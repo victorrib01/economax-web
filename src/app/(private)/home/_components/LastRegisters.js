@@ -2,13 +2,13 @@
 import formatarCentavosParaReal from "@/utils/formatters/formatCentavosToReal";
 import { useEffect, useState } from "react";
 
-export default function LastRegisters({ getLast5Records, loading }) {
+export default function LastRegisters({ cookies, getLast5Records, loading }) {
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    getLast5Records(setResults);
-    console.log(results);
-  }, []);
+    if (cookies) getLast5Records(setResults);
+  }, [cookies]);
+
   return (
     <div className="h-full flex flex-col">
       <p>Últimos 5 registros</p>
