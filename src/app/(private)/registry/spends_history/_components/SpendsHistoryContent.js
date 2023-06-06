@@ -1,10 +1,12 @@
 "use client";
 import SelectComponent from "@/components/Select";
+import { useAuth } from "@/contexts/auth";
 import api from "@/services/api";
 import formatarCentavosParaReal from "@/utils/formatters/formatCentavosToReal";
 import { useEffect, useState } from "react";
 
-export default function SpendsHistoryContent({ loginCookie }) {
+export default function SpendsHistoryContent() {
+  const { cookies } = useAuth();
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
   const [results, setResults] = useState([]);
@@ -17,8 +19,8 @@ export default function SpendsHistoryContent({ loginCookie }) {
     setLoading(true);
     try {
       const response = await api.post("/ultimas_despesas_usuario", {
-        id_usuario: loginCookie.id,
-        usuario: loginCookie.user,
+        id_usuario: cookies.id,
+        usuario: cookies.user,
         dias: value.value,
       });
 

@@ -1,9 +1,11 @@
 "use client";
+import { useAuth } from "@/contexts/auth";
 import api from "@/services/api";
 import formatarCentavosParaReal from "@/utils/formatters/formatCentavosToReal";
 import { useEffect, useState } from "react";
 
-export default function Resume({ loginCookie }) {
+export default function Resume() {
+  const { cookies } = useAuth();
   const [month, setMonth] = useState("");
   const [today, setToday] = useState("");
 
@@ -13,7 +15,7 @@ export default function Resume({ loginCookie }) {
         "/soma_total_gastos_por_usuario_por_dia",
         {
           dias: "",
-          id_usuario: loginCookie.id,
+          id_usuario: cookies.id,
         }
       );
 
@@ -28,7 +30,7 @@ export default function Resume({ loginCookie }) {
         "/soma_total_gastos_por_usuario_por_dia",
         {
           dias: "0",
-          id_usuario: loginCookie.id,
+          id_usuario: cookies.id,
         }
       );
 

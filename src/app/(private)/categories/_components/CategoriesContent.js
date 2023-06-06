@@ -9,10 +9,10 @@ import { useEffect } from "react";
 import React from "react";
 import AddCategory from "./AddCategory";
 import { getAllCategories, getUserCategories } from "@/services/category";
+import { useAuth } from "@/contexts/auth";
 
-export default function CategoriesContent({ loginCookie }) {
-  const loginCookieParse = JSON.parse(loginCookie?.value || null);
-
+export default function CategoriesContent() {
+  const { cookies } = useAuth();
   const [collapse, setCollapse] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ export default function CategoriesContent({ loginCookie }) {
     await getAllCategories(setAllCategories);
 
   const fetchUserCategories = async () => {
-    await getUserCategories(setRegisteredCategories, loginCookieParse.id);
+    await getUserCategories(setRegisteredCategories, cookies.id);
     setLoading(false);
   };
 

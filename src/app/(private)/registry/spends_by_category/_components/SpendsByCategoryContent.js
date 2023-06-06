@@ -1,10 +1,12 @@
 "use client";
 import SelectComponent from "@/components/Select";
+import { useAuth } from "@/contexts/auth";
 import api from "@/services/api";
 import formatarCentavosParaReal from "@/utils/formatters/formatCentavosToReal";
 import { useEffect, useState } from "react";
 
-export default function SpendsByCategoryContent({ loginCookie }) {
+export default function SpendsByCategoryContent() {
+  const { cookies } = useAuth();
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
   const [results, setResults] = useState([]);
@@ -20,7 +22,7 @@ export default function SpendsByCategoryContent({ loginCookie }) {
     try {
       const response = await api.post("/gastos_categoria_usuario", {
         dias: value.value,
-        id_usuario: loginCookie.id,
+        id_usuario: cookies.id,
       });
       setResults(
         Object.entries(response.data).map(([category, value]) => ({
