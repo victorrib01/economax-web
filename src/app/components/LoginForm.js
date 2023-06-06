@@ -22,7 +22,10 @@ export function LoginForm({ loginCookie }) {
     if (placeholder === "Password") {
       setForm((prevState) => ({ ...prevState, password: value }));
     } else {
-      setForm((prevState) => ({ ...prevState, username: value.trim() }));
+      setForm((prevState) => ({
+        ...prevState,
+        username: value.toLowerCase().trim(),
+      }));
     }
   };
   const handleSubmit = async (e) => {
