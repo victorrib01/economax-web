@@ -83,8 +83,10 @@ export default function RegisterForm({ getLast5Records }) {
     <div className="flex flex-col items-center justify-between h-full py-1">
       <Input
         placeholder={"valor"}
-        type={"number"}
-        onChange={(e) => handleInputChange(e)}
+        type="tel"
+        pattern="[0-9]*"
+        inputmode="numeric"
+        onChange={handleInputChange}
         value={value}
       />
       <SelectComponent
