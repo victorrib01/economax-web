@@ -62,6 +62,7 @@ export default function RegisterForm({ loginCookie, getLast5Records }) {
   }
 
   async function getUserCategories() {
+    setLoading(true);
     try {
       const response = await api.post(
         "/busca_categorias_despesas_geral_usuario",
@@ -76,9 +77,11 @@ export default function RegisterForm({ loginCookie, getLast5Records }) {
         };
       });
       setOptions(formatted);
+      setLoading(false);
       return Promise.resolve();
     } catch (err) {
       console.error(err);
+      setLoading(false);
       return Promise.reject(err);
     }
   }
@@ -95,6 +98,8 @@ export default function RegisterForm({ loginCookie, getLast5Records }) {
         value={value}
       />
       <SelectComponent
+        isLoading={loading}
+        isDisabled={loading}
         options={options}
         onChange={setCategory}
         defaultValue={category}

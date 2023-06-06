@@ -5,14 +5,18 @@ export default function SelectComponent({
   onChange,
   defaultValue,
   placeholder,
+  isLoading = false,
+  isDisabled = false,
   ...rest
 }) {
   return (
     <div className="w-full flex justify-center">
       <Select
+        isLoading={isLoading}
+        isDisabled={isDisabled}
         className="w-full text-center"
         styles={{
-          control: (baseStyles, state) => ({
+          control: (baseStyles) => ({
             ...baseStyles,
             minHeight: "4rem",
             borderRadius: "1rem",

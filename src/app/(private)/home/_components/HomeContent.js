@@ -22,6 +22,7 @@ export default function HomeContent({ loginCookie }) {
     return dateFormatted;
   }
   async function getLast5Records(setResults) {
+    setLoading(true);
     try {
       const response = await api.post("/ultimas_despesas_usuario", {
         id_usuario: loginCookie.id,
