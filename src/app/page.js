@@ -8,11 +8,12 @@ export default async function LoginPage() {
   const nextCookies = cookies();
 
   const loginCookie = nextCookies.get("login");
+  const loginCookieParse = JSON.parse(loginCookie?.value || null);
 
   return (
     <Container>
       <Image src="/Logo.svg" width={500} height={500} alt="Logo" priority />
-      <LoginForm loginCookie={loginCookie} />
+      <LoginForm loginCookie={loginCookieParse} />
       <p>v{process.env.VERSION}</p>
     </Container>
   );

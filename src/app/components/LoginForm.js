@@ -13,8 +13,6 @@ import api from "@/services/api";
 export function LoginForm({ loginCookie }) {
   const router = useRouter();
 
-  const loginCookieParse = JSON.parse(loginCookie?.value || null);
-
   const [form, setForm] = useState(initialState);
 
   const handleChange = (e) => {
@@ -28,6 +26,7 @@ export function LoginForm({ loginCookie }) {
       }));
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -50,10 +49,11 @@ export function LoginForm({ loginCookie }) {
   };
 
   useEffect(() => {
-    if (loginCookieParse) {
-      router.push("/home");
+    const token = loginCookie?.id; // Obtenha o token do cookie ou de outro local
+    if (token) {
+      router.push("/home"); // Redirecione para a página de login
     }
-  }, [loginCookieParse, router]);
+  }, [loginCookie, router]);
 
   return (
     <>
