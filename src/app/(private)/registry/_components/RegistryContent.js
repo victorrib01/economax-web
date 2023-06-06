@@ -1,10 +1,10 @@
 import ButtonsContainer from "./ButtonsContainer";
 import Resume from "./Resume";
 
-export default function RegistryContent() {
+export default function RegistryContent({ loginCookie }) {
   return (
     <div className="h-full ">
-      <Resume />
+      <Resume loginCookie={loginCookie} />
       <ButtonsContainer />
     </div>
   );
