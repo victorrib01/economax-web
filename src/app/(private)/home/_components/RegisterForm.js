@@ -79,10 +79,6 @@ export default function RegisterForm({ getLast5Records }) {
     if (cookies) getCategories();
   }, [cookies]);
 
-  useEffect(() => {
-    console.log(options);
-  }, [options]);
-
   return (
     <div className="flex flex-col items-center justify-between h-full py-1">
       <Input

@@ -21,7 +21,7 @@ export default function LayoutPage({ loginCookie, children }) {
         router.push("/"); // Redirecione para a página de login se o token for inválido
       }
     }
-  }, [loginCookie]);
+  }, [loginCookie, router]);
 
   return (
     <AuthProvider loginCookie={loginCookie}>

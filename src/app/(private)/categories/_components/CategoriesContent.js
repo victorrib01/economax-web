@@ -96,7 +96,7 @@ export default function CategoriesContent() {
   useEffect(() => {
     fetchAllCategories();
     fetchUserCategories();
-  }, []);
+  }, [cookies]);
 
   return (
     <div className="flex flex-col h-full">

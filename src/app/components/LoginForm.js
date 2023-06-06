@@ -8,6 +8,7 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { useRouter } from "next/navigation";
 import { setLoginCookie } from "@/utils/cookies/loginCookie";
+import api from "@/services/api";
 
 export function LoginForm({ loginCookie }) {
   const router = useRouter();
@@ -21,26 +22,22 @@ export function LoginForm({ loginCookie }) {
     if (placeholder === "Password") {
       setForm((prevState) => ({ ...prevState, password: value }));
     } else {
-      setForm((prevState) => ({ ...prevState, username: value }));
+      setForm((prevState) => ({ ...prevState, username: value.trim() }));
     }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${process.env.API_URL}/login`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    try {
+      const response = await api.post(`/login`, {
         usuario: form.username,
         senha: form.password,
-      }),
-    });
-    const { id_usuario } = await response.json();
-
-    try {
-      setLoginCookie({ user: form.username, id: id_usuario });
+      });
+      const res = response.data;
+      if (res["Message"] == "Usuário autenticado com sucesso!") {
+        setLoginCookie({ user: form.username, id: res.id_usuario });
+      } else {
+        alert(res["Message"]);
+      }
       router.refresh();
     } catch (error) {
       console.error(error);
@@ -54,6 +51,7 @@ export function LoginForm({ loginCookie }) {
       router.push("/home");
     }
   }, [loginCookieParse, router]);
+
   return (
     <>
       <div className="w-full flex flex-col justify-between min-h-[150px]">
