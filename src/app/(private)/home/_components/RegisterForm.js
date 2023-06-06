@@ -85,7 +85,6 @@ export default function RegisterForm({ getLast5Records }) {
         placeholder={"valor"}
         type="tel"
         pattern="[0-9]*"
-        inputmode="numeric"
         onChange={handleInputChange}
         value={value}
       />
