@@ -10,6 +10,7 @@ import React from "react";
 import AddCategory from "./AddCategory";
 import { getAllCategories, getUserCategories } from "@/services/category";
 import { useAuth } from "@/contexts/auth";
+import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 
 export default function CategoriesContent() {
   const { cookies } = useAuth();
@@ -104,8 +105,8 @@ export default function CategoriesContent() {
     <div className="flex flex-col h-full">
       {cookies ? (
         <>
-          <div className={collapse ? "h-[90%]" : "h-[40%]"}>
-            <div className="h-[20%]">
+          <div className={collapse ? "h-[90%]" : "h-[50%]"}>
+            <div className={collapse ? "h-[10%]" : "h-[20%]"}>
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -114,7 +115,11 @@ export default function CategoriesContent() {
             </div>
             <div
               id="lista"
-              className="flex flex-col my-2 flex-grow overflow-y-auto h-[50%]"
+              className={
+                collapse
+                  ? "flex flex-col my-2 flex-grow overflow-y-auto h-[80%]"
+                  : "flex flex-col my-2 flex-grow overflow-y-auto h-[60%]"
+              }
             >
               {loading ? (
                 <div>
@@ -166,10 +171,22 @@ export default function CategoriesContent() {
               <Separator />
             </div>
           </div>
-          <div className={collapse ? "h-[10%]" : "h-[60%]"}>
-            <p className="h-[5%]" onClick={() => setCollapse(!collapse)}>
-              Categorias cadastradas
-            </p>
+          <div className={collapse ? "h-[10%]" : "h-[50%]"}>
+            <div
+              className={
+                collapse
+                  ? "h-[100%] flex flex-row justify-between items-center"
+                  : "h-[5%] flex flex-row justify-between items-center py-4"
+              }
+              onClick={() => setCollapse(!collapse)}
+            >
+              <p
+              // className={collapse ? "h-[100%]" : "h-[5%]"}
+              >
+                Categorias cadastradas
+              </p>
+              {collapse ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}
+            </div>
             <div className={collapse ? "hidden" : "h-[95%] overflow-y-auto"}>
               {loading ? (
                 <div>
