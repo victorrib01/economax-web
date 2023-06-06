@@ -94,94 +94,102 @@ export default function CategoriesContent() {
   }, [registeredCategories]);
 
   useEffect(() => {
-    fetchAllCategories();
-    fetchUserCategories();
+    if (cookies) {
+      fetchAllCategories();
+      fetchUserCategories();
+    }
   }, [cookies]);
 
   return (
     <div className="flex flex-col h-full">
-      <div className={collapse ? "h-[90%]" : "h-[40%]"}>
-        <div className="h-[20%]">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={"categoria"}
-          />
-        </div>
-        <div
-          id="lista"
-          className="flex flex-col my-2 flex-grow overflow-y-auto h-[50%]"
-        >
-          {loading ? (
-            <div>
-              <p>loading</p>
+      {cookies ? (
+        <>
+          <div className={collapse ? "h-[90%]" : "h-[40%]"}>
+            <div className="h-[20%]">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={"categoria"}
+              />
             </div>
-          ) : filteredCategories.length === 0 ? (
-            <div>
-              <AddCategory />
-            </div>
-          ) : (
-            filteredCategories.map((item, index) => {
-              const isSelected =
-                selectedItems.findIndex(
-                  (selectedItem) => selectedItem.id === item.id
-                ) !== -1;
-              if (
-                allCategories.filter((category) => category.name === input)
-                  .length === 0 &&
-                input.length > 0 &&
-                !allCategories.filter(
-                  (category) => category.name === input.trim()
-                ).length
-              ) {
-                return (
-                  <React.Fragment key={item.id}>
-                    {index === 0 && <AddCategory />}
+            <div
+              id="lista"
+              className="flex flex-col my-2 flex-grow overflow-y-auto h-[50%]"
+            >
+              {loading ? (
+                <div>
+                  <p>loading</p>
+                </div>
+              ) : filteredCategories.length === 0 ? (
+                <div>
+                  <AddCategory />
+                </div>
+              ) : (
+                filteredCategories.map((item, index) => {
+                  const isSelected =
+                    selectedItems.findIndex(
+                      (selectedItem) => selectedItem.id === item.id
+                    ) !== -1;
+                  if (
+                    allCategories.filter((category) => category.name === input)
+                      .length === 0 &&
+                    input.length > 0 &&
+                    !allCategories.filter(
+                      (category) => category.name === input.trim()
+                    ).length
+                  ) {
+                    return (
+                      <React.Fragment key={item.id}>
+                        {index === 0 && <AddCategory />}
+                        <CategorySelect
+                          category={item}
+                          isSelected={isSelected}
+                          toggleItem={toggleItem}
+                        />
+                      </React.Fragment>
+                    );
+                  }
+                  return (
                     <CategorySelect
+                      key={item.id}
                       category={item}
                       isSelected={isSelected}
                       toggleItem={toggleItem}
                     />
-                  </React.Fragment>
-                );
-              }
-              return (
-                <CategorySelect
-                  key={item.id}
-                  category={item}
-                  isSelected={isSelected}
-                  toggleItem={toggleItem}
-                />
-              );
-            })
-          )}
-        </div>
+                  );
+                })
+              )}
+            </div>
 
-        <div className="h-[10%]">
-          <Button title={"Cadastrar"} />
-          <Separator />
-        </div>
-      </div>
-      <div className={collapse ? "h-[10%]" : "h-[60%]"}>
-        <p className="h-[5%]" onClick={() => setCollapse(!collapse)}>
-          Categorias cadastradas
-        </p>
-        <div className={collapse ? "hidden" : "h-[95%] overflow-y-auto"}>
-          {loading ? (
-            <div>
-              <p>loading</p>
+            <div className="h-[10%]">
+              <Button title={"Cadastrar"} />
+              <Separator />
             </div>
-          ) : registeredCategories.length > 0 ? (
-            registeredCategories.map((item) => (
-              <RegisteredCategory key={item.id} category={item} />
-            ))
-          ) : (
-            <div>
-              <p>Sem categorias cadastradas até o momento</p>
+          </div>
+          <div className={collapse ? "h-[10%]" : "h-[60%]"}>
+            <p className="h-[5%]" onClick={() => setCollapse(!collapse)}>
+              Categorias cadastradas
+            </p>
+            <div className={collapse ? "hidden" : "h-[95%] overflow-y-auto"}>
+              {loading ? (
+                <div>
+                  <p>loading</p>
+                </div>
+              ) : registeredCategories.length > 0 ? (
+                registeredCategories.map((item) => (
+                  <RegisteredCategory key={item.id} category={item} />
+                ))
+              ) : (
+                <div>
+                  <p>Sem categorias cadastradas até o momento</p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </div>
+          </div>
+        </>
+      ) : (
+        <p>loading</p>
+      )}
     </div>
   );
 }

@@ -14,10 +14,18 @@ export default function ProfileContent() {
   }
   return (
     <div className="flex flex-col h-full p-8 items-center justify-between">
-      <p>ID: {cookies.id}</p>
-      <p>usuario: {cookies.user}</p>
-      <Button title={"Sair"} onClick={() => signOut()} />
-      <p>v{process.env.VERSION}</p>
+      {cookies ? (
+        <>
+          <p>ID: {cookies.id}</p>
+          <p>usuario: {cookies.user}</p>
+          <Button title={"Sair"} onClick={() => signOut()} />
+          <p>v{process.env.VERSION}</p>
+        </>
+      ) : (
+        <div>
+          <p>loading</p>
+        </div>
+      )}
     </div>
   );
 }
