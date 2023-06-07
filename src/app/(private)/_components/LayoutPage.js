@@ -4,6 +4,7 @@ import Menu from "./Menu";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import AuthProvider from "@/contexts/auth";
+import Loader from "@/components/Loader";
 
 export default function LayoutPage({ loginCookie, children }) {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function LayoutPage({ loginCookie, children }) {
           <div className="flex flex-col items-center justify-between h-full">
             <BackButton />
             <div className="h-[92%] w-full overflow-y-hidden">
-              {loginCookie?.id ? children : "loading"}
+              {loginCookie?.id ? children : <Loader />}
             </div>
             <Menu />
           </div>

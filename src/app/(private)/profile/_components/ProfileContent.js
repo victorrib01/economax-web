@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/Button";
+import Loader from "@/components/Loader";
 import { useAuth } from "@/contexts/auth";
 import { clearLoginCookie } from "@/utils/cookies/loginCookie";
 import { useRouter } from "next/navigation";
@@ -22,9 +23,7 @@ export default function ProfileContent() {
           <p>v{process.env.VERSION}</p>
         </>
       ) : (
-        <div>
-          <p>loading</p>
-        </div>
+        <Loader />
       )}
     </div>
   );

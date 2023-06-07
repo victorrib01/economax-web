@@ -10,6 +10,7 @@ import { setLoginCookie } from "@/utils/cookies/loginCookie";
 
 export default function SignUp() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     user: "",
     password: "",
@@ -17,6 +18,7 @@ export default function SignUp() {
   });
 
   async function signUp() {
+    setLoading(true);
     try {
       if (
         form.user === "" ||
@@ -45,6 +47,7 @@ export default function SignUp() {
     } catch (err) {
       console.error("handleRegister", err);
     }
+    setLoading(false);
   }
 
   return (
@@ -82,7 +85,7 @@ export default function SignUp() {
         />
       </div>
       <div className="w-full flex flex-col justify-between min-h-[150px]">
-        <Button title="Sign Up" onClick={signUp} />
+        <Button title="Sign Up" onClick={signUp} disable={loading} />
         <Button title="Back" onClick={() => router.push("/")} outline />
       </div>
     </Container>

@@ -1,4 +1,5 @@
 "use client";
+import Loader from "@/components/Loader";
 import formatarCentavosParaReal from "@/utils/formatters/formatCentavosToReal";
 import { useEffect, useState } from "react";
 
@@ -14,9 +15,7 @@ export default function LastRegisters({ cookies, getLast5Records, loading }) {
       <p>Últimos 5 registros</p>
       <div className="my-2 flex-grow overflow-y-auto">
         {loading ? (
-          <div>
-            <p>loading...</p>
-          </div>
+          <Loader />
         ) : results.length > 0 ? (
           results.map((item) => (
             <div

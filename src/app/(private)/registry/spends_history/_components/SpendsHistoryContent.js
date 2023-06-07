@@ -1,4 +1,5 @@
 "use client";
+import Loader from "@/components/Loader";
 import SelectComponent from "@/components/Select";
 import { useAuth } from "@/contexts/auth";
 import api from "@/services/api";
@@ -74,9 +75,7 @@ export default function SpendsHistoryContent() {
         <p>{value.value ? `Últimos ${value.value} dias` : "Último mês"}</p>
         <div id="list">
           {loading ? (
-            <div>
-              <p>loading</p>
-            </div>
+            <Loader />
           ) : (
             results.map((item) => (
               <div

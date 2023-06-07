@@ -15,6 +15,7 @@ import {
 } from "@/services/category";
 import { useAuth } from "@/contexts/auth";
 import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
+import Loader from "@/components/Loader";
 
 export default function CategoriesContent() {
   const { cookies } = useAuth();
@@ -47,6 +48,7 @@ export default function CategoriesContent() {
   });
 
   const handleAssingCategories = async () => {
+    setLoading(true);
     try {
       const response = await assignCategory({
         id: cookies.id,
@@ -63,6 +65,7 @@ export default function CategoriesContent() {
       alert("Erro ao cadastrar categoria!");
       console.error("handleAssingCategories", err);
     }
+    setLoading(false);
   };
 
   // Função para alternar a seleção de um item
@@ -150,9 +153,7 @@ export default function CategoriesContent() {
               }
             >
               {loading ? (
-                <div>
-                  <p>loading</p>
-                </div>
+                <Loader />
               ) : filteredCategories.length === 0 ? (
                 <div>
                   <AddCategory
@@ -205,7 +206,11 @@ export default function CategoriesContent() {
             </div>
 
             <div className="h-[10%]">
-              <Button title={"Cadastrar"} onClick={handleAssingCategories} />
+              <Button
+                title={"Cadastrar"}
+                onClick={handleAssingCategories}
+                disable={loading}
+              />
               <Separator />
             </div>
           </div>
@@ -227,9 +232,7 @@ export default function CategoriesContent() {
             </div>
             <div className={collapse ? "hidden" : "h-[95%] overflow-y-auto"}>
               {loading ? (
-                <div>
-                  <p>loading</p>
-                </div>
+                <Loader />
               ) : registeredCategories.length > 0 ? (
                 registeredCategories.map((item) => (
                   <RegisteredCategory key={item.id} category={item} />
@@ -243,7 +246,7 @@ export default function CategoriesContent() {
           </div>
         </>
       ) : (
-        <p>loading</p>
+        <Loader />
       )}
     </div>
   );

@@ -12,7 +12,7 @@ import api from "@/services/api";
 
 export function LoginForm({ loginCookie }) {
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState(initialState);
 
   const handleChange = (e) => {
@@ -29,6 +29,7 @@ export function LoginForm({ loginCookie }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await api.post(`/login`, {
         usuario: form.username,
@@ -46,6 +47,7 @@ export function LoginForm({ loginCookie }) {
     }
 
     setForm(initialState);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -73,7 +75,7 @@ export function LoginForm({ loginCookie }) {
         />
       </div>
       <div className="w-full flex flex-col justify-between min-h-[150px]">
-        <Button title="Login" onClick={handleSubmit} />
+        <Button title="Login" onClick={handleSubmit} disable={loading} />
         <Button
           title="Sign up"
           onClick={() => router.push("/signup")}

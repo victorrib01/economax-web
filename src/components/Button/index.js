@@ -1,3 +1,6 @@
+import { AiOutlineLoading } from "react-icons/ai";
+import Loader from "../Loader";
+
 export function Button({ title, onClick, outline, disable = false }) {
   if (outline) {
     const outlineClass =
@@ -15,16 +18,16 @@ export function Button({ title, onClick, outline, disable = false }) {
     );
   }
   const defaultClass =
-    "rounded-2xl bg-blue-500 text-white font-bold hover:bg-blue-700 w-full p-4";
+    "flex justify-center items-center rounded-2xl bg-blue-500 text-white font-bold hover:bg-blue-700 w-full p-4";
   const disableDefaultClass =
-    "rounded-2xl bg-blue-500 text-white font-bold w-full p-4";
+    "flex justify-center items-center rounded-2xl bg-blue-500 text-white font-bold w-full p-4";
   return (
     <button
       onClick={onClick}
       className={disable ? disableDefaultClass : defaultClass}
       disabled={disable}
     >
-      {title}
+      {disable ? <Loader /> : title}
     </button>
   );
 }

@@ -34,7 +34,8 @@ export default function RegisterForm({ getLast5Records }) {
   };
 
   async function handleRegister() {
-    if (!convertToCents(value) || !category?.value)
+    console.log(category);
+    if (!convertToCents(value) || !category?.label)
       return alert("Preencha todos os campos!");
     try {
       setLoading(true);
@@ -43,7 +44,7 @@ export default function RegisterForm({ getLast5Records }) {
         usuario: cookies.user,
         gastos: [
           {
-            id_categoria: category.value,
+            id_categoria: category.label,
             valor: `${convertToCents(value)}`,
             descricao: description,
           },
@@ -54,7 +55,7 @@ export default function RegisterForm({ getLast5Records }) {
         setValue("");
         setCategory("");
         setDescription("");
-        setTimeout(() => getLast5Records(), 200);
+        setTimeout(() => getLast5Records(), 500);
       }
       setLoading(false);
     } catch (error) {
