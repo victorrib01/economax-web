@@ -13,7 +13,7 @@ export default function RegisterForm({ getLast5Records }) {
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState(null);
 
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState("0");
   const [category, setCategory] = useState(null);
   const [description, setDescription] = useState("");
 
@@ -86,7 +86,7 @@ export default function RegisterForm({ getLast5Records }) {
         type="tel"
         pattern="[0-9]*"
         onChange={handleInputChange}
-        value={value}
+        value={`R$ ${value}`}
       />
       <SelectComponent
         id={"category-select"}

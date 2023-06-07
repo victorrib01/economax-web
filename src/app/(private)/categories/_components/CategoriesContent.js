@@ -8,13 +8,17 @@ import { useState } from "react";
 import { useEffect } from "react";
 import React from "react";
 import AddCategory from "./AddCategory";
-import { getAllCategories, getUserCategories } from "@/services/category";
+import {
+  assignCategory,
+  getAllCategories,
+  getUserCategories,
+} from "@/services/category";
 import { useAuth } from "@/contexts/auth";
 import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 
 export default function CategoriesContent() {
   const { cookies } = useAuth();
-  const [collapse, setCollapse] = useState(false);
+  const [collapse, setCollapse] = useState(true);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -41,6 +45,25 @@ export default function CategoriesContent() {
     }
     return true; // Retorna true para incluir todos os itens se input não for uma string
   });
+
+  const handleAssingCategories = async () => {
+    try {
+      const response = await assignCategory({
+        id: cookies.id,
+        fetchData: fetchUserCategories,
+        selectedItems,
+      });
+      if (response.data.message === "Categorias inseridas com sucesso!") {
+        alert("Categoria cadastrada com sucesso!");
+      } else {
+        alert("Erro ao cadastrar categoria!");
+        console.error("handleAssingCategories", response);
+      }
+    } catch (err) {
+      alert("Erro ao cadastrar categoria!");
+      console.error("handleAssingCategories", err);
+    }
+  };
 
   // Função para alternar a seleção de um item
   const toggleItem = (itemId) => {
@@ -71,8 +94,13 @@ export default function CategoriesContent() {
     setInput("");
   };
 
+  async function fetchAll() {
+    fetchUserCategories();
+    fetchAllCategories();
+  }
   useEffect(() => {
     function filterCategories() {
+      setLoading(true);
       const updatedCategories = allCategories
         .map((categoryItem) => {
           // Verificar se a categoria está na lista de registeredCategories
@@ -89,6 +117,7 @@ export default function CategoriesContent() {
         .sort((a, b) => a.registered - b.registered);
 
       setAllCategories(updatedCategories);
+      setLoading(false);
     }
 
     filterCategories();
@@ -96,8 +125,7 @@ export default function CategoriesContent() {
 
   useEffect(() => {
     if (cookies) {
-      fetchAllCategories();
-      fetchUserCategories();
+      fetchAll();
     }
   }, [cookies]);
 
@@ -127,7 +155,11 @@ export default function CategoriesContent() {
                 </div>
               ) : filteredCategories.length === 0 ? (
                 <div>
-                  <AddCategory />
+                  <AddCategory
+                    value={input}
+                    fetchAll={fetchAll}
+                    setAllCategories={setAllCategories}
+                  />
                 </div>
               ) : (
                 filteredCategories.map((item, index) => {
@@ -145,7 +177,13 @@ export default function CategoriesContent() {
                   ) {
                     return (
                       <React.Fragment key={item.id}>
-                        {index === 0 && <AddCategory />}
+                        {index === 0 && (
+                          <AddCategory
+                            value={input}
+                            fetchAll={fetchAll}
+                            setAllCategories={setAllCategories}
+                          />
+                        )}
                         <CategorySelect
                           category={item}
                           isSelected={isSelected}
@@ -167,7 +205,7 @@ export default function CategoriesContent() {
             </div>
 
             <div className="h-[10%]">
-              <Button title={"Cadastrar"} />
+              <Button title={"Cadastrar"} onClick={handleAssingCategories} />
               <Separator />
             </div>
           </div>

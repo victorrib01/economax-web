@@ -68,3 +68,16 @@ export async function assignCategory({ id, fetchData, selectedItems }) {
     console.error(err);
   }
 }
+
+export async function createCategory({ id, category }) {
+  try {
+    const response = await api.post("/cadastro_categorias", {
+      id_usuario: id,
+      categoria: category.trim(),
+    });
+
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+}
