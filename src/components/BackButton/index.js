@@ -20,12 +20,12 @@ export default function BackButton() {
       className={
         !backButtonActive
           ? "hidden"
-          : "w-full mb-4 cursor-pointer flex flex-row justify-between items-center"
+          : "h-full w-full cursor-pointer flex flex-row justify-between items-center"
       }
       onClick={goBack}
     >
-      <AiOutlineArrowLeft size={30} />
-      <p className="w-[95%] text-center pr-10 text-xl font-bold">
+      <AiOutlineArrowLeft size={30} className="w-[10%]" />
+      <p className="w-[90%] text-center pr-10 text-xl font-bold">
         {pathname.split("/").length === 3 &&
           translate.filter((item) => item[0] === pathname.split("/")[2])[0][1]}
       </p>

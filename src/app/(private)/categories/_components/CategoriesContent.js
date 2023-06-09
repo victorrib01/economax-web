@@ -135,8 +135,14 @@ export default function CategoriesContent() {
   return (
     <div className="flex flex-col h-full">
       {cookies ? (
-        <>
-          <div className={collapse ? "h-[90%]" : "h-[50%]"}>
+        <div className="h-full w-full flex flex-col justify-between items-center">
+          <div
+            className={
+              collapse
+                ? "h-[90%] w-full flex flex-col"
+                : "h-[50%] w-full flex flex-col"
+            }
+          >
             <div className={collapse ? "h-[10%]" : "h-[20%]"}>
               <Input
                 value={input}
@@ -205,16 +211,21 @@ export default function CategoriesContent() {
               )}
             </div>
 
-            <div className="h-[10%]">
+            <div className={collapse ? "flex h-[10%]" : "flex h-[20%]"}>
               <Button
                 title={"Cadastrar"}
                 onClick={handleAssingCategories}
                 disable={loading}
               />
-              <Separator />
             </div>
           </div>
-          <div className={collapse ? "h-[10%]" : "h-[50%]"}>
+          <div
+            className={
+              collapse
+                ? "h-[10%] w-full flex flex-col"
+                : "h-[50%] w-full flex flex-col"
+            }
+          >
             <div
               className={
                 collapse
@@ -223,12 +234,8 @@ export default function CategoriesContent() {
               }
               onClick={() => setCollapse(!collapse)}
             >
-              <p
-              // className={collapse ? "h-[100%]" : "h-[5%]"}
-              >
-                Categorias cadastradas
-              </p>
-              {collapse ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}
+              <p>Categorias cadastradas</p>
+              {!collapse ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}
             </div>
             <div className={collapse ? "hidden" : "h-[95%] overflow-y-auto"}>
               {loading ? (
@@ -244,7 +251,7 @@ export default function CategoriesContent() {
               )}
             </div>
           </div>
-        </>
+        </div>
       ) : (
         <Loader />
       )}

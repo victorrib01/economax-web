@@ -13,7 +13,7 @@ export default function Menu() {
   ];
 
   return (
-    <div className="flex flex-row border-t min-w-full items-center justify-between h-[8%]">
+    <div className="flex flex-row border-t min-w-full items-center justify-between h-full p-4">
       {menuItems.map((item) => {
         const isActive = pathname.startsWith(`/${item[0]}`);
         return (

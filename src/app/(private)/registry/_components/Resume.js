@@ -47,7 +47,7 @@ export default function Resume() {
     }
   }, [cookies]);
   return (
-    <div className="h-[50%] flex flex-col justify-center items-center border">
+    <div className="w-full h-[50%] flex flex-col justify-center items-center border">
       <p>Gastos do mês: {formatarCentavosParaReal(month)}</p>
       <p>Gastos do dia: {formatarCentavosParaReal(today)}</p>
     </div>

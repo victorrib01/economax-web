@@ -52,10 +52,10 @@ export default function HomeContent() {
   }
   return (
     <>
-      <div className="h-[40%]">
+      <div className="h-[50%]">
         <RegisterForm getLast5Records={getLast5Records} />
       </div>
-      <div className="h-[60%]">
+      <div className="h-[50%]">
         <LastRegisters
           cookies={cookies}
           getLast5Records={getLast5Records}

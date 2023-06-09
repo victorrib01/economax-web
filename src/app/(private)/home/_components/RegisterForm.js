@@ -34,7 +34,6 @@ export default function RegisterForm({ getLast5Records }) {
   };
 
   async function handleRegister() {
-    console.log(category);
     if (!convertToCents(value) || !category?.label)
       return alert("Preencha todos os campos!");
     try {
