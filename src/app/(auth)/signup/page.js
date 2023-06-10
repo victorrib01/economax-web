@@ -85,7 +85,12 @@ export default function SignUp() {
         />
       </div>
       <div className="w-full flex flex-col justify-between min-h-[150px]">
-        <Button title="Sign Up" onClick={signUp} disable={loading} />
+        <Button
+          title="Sign Up"
+          onClick={signUp}
+          loading={loading}
+          disable={loading}
+        />
         <Button title="Back" onClick={() => router.push("/")} outline />
       </div>
     </Container>

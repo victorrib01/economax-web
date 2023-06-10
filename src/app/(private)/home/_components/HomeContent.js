@@ -8,6 +8,8 @@ import { useAuth } from "@/contexts/auth";
 export default function HomeContent() {
   const { cookies } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState([]);
+
   function parseDate(dateString) {
     const [date, time] = dateString.split(" ");
     const [year, month, day] = date.split("-").map(Number);
@@ -23,7 +25,7 @@ export default function HomeContent() {
     );
     return dateFormatted;
   }
-  async function getLast5Records(setResults) {
+  async function getLast5Records() {
     setLoading(true);
     try {
       const response = await api.post("/ultimas_despesas_usuario", {
@@ -52,14 +54,15 @@ export default function HomeContent() {
   }
   return (
     <>
-      <div className="h-[50%]">
+      <div className="flex w-full items-center justify-center h-[70%]">
         <RegisterForm getLast5Records={getLast5Records} />
       </div>
-      <div className="h-[50%]">
+      <div className="flex w-full items-center justify-center h-[30%]">
         <LastRegisters
           cookies={cookies}
           getLast5Records={getLast5Records}
           loading={loading}
+          results={results}
         />
       </div>
     </>

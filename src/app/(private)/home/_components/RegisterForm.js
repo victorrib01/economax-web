@@ -34,7 +34,7 @@ export default function RegisterForm({ getLast5Records }) {
   };
 
   async function handleRegister() {
-    if (!convertToCents(value) || !category?.label)
+    if (!convertToCents(value) || !category?.value)
       return alert("Preencha todos os campos!");
     try {
       setLoading(true);
@@ -43,18 +43,18 @@ export default function RegisterForm({ getLast5Records }) {
         usuario: cookies.user,
         gastos: [
           {
-            id_categoria: category.label,
+            id_categoria: category.value,
             valor: `${convertToCents(value)}`,
             descricao: description,
           },
         ],
       });
       if (response.data.message === "Gastos inseridos com sucesso!") {
+        setTimeout(() => getLast5Records(), 1000);
         alert("Gasto inserido com sucesso!");
         setValue("");
         setCategory("");
         setDescription("");
-        setTimeout(() => getLast5Records(), 500);
       }
       setLoading(false);
     } catch (error) {
@@ -62,10 +62,19 @@ export default function RegisterForm({ getLast5Records }) {
       console.error("handleRegister", error);
     }
   }
+
   async function getCategories() {
     setLoading(true);
     try {
-      await getUserCategories(setOptions, cookies.id, true);
+      const res = await getUserCategories(() => {}, cookies.id, true);
+      setOptions(
+        res.map((item) => {
+          return {
+            value: item.id,
+            label: item.label,
+          };
+        })
+      );
       setLoading(false);
       return Promise.resolve();
     } catch (err) {
@@ -80,7 +89,7 @@ export default function RegisterForm({ getLast5Records }) {
   }, [cookies]);
 
   return (
-    <div className="flex flex-col items-center justify-between h-full py-1">
+    <div className="flex flex-col items-center justify-between h-[90%] w-full py-1 mb-4">
       <Input
         placeholder={"valor"}
         type="tel"
@@ -90,8 +99,8 @@ export default function RegisterForm({ getLast5Records }) {
       />
       <SelectComponent
         id={"category-select"}
-        // isLoading={loading}
-        // isDisabled={loading}
+        isLoading={loading}
+        isDisabled={loading}
         options={options}
         onChange={setCategory}
         defaultValue={category}

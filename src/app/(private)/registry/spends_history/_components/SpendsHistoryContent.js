@@ -22,7 +22,7 @@ export default function SpendsHistoryContent() {
       const response = await api.post("/ultimas_despesas_usuario", {
         id_usuario: cookies.id,
         usuario: cookies.user,
-        dias: value.value,
+        dias: value.value || "",
       });
 
       if (response.data.length == 0) return alert("Sem registros");
@@ -67,7 +67,7 @@ export default function SpendsHistoryContent() {
         <SelectComponent
           options={options}
           onChange={setValue}
-          defaultValue={value}
+          defaultValue={{ value: "", label: "Último mês" }}
           placeholder="Selecione algum período"
         />
       </div>
@@ -80,10 +80,16 @@ export default function SpendsHistoryContent() {
             results.map((item) => (
               <div
                 key={item.data}
-                className="p-10 my-2 bg-white w-full flex items-center justify-between"
+                className="p-6 my-2 bg-white w-full flex items-center justify-between"
               >
-                <p>{item.category}</p>
-                <p>{formatarCentavosParaReal(item.value)}</p>
+                <div>
+                  <p>{item.category}</p>
+                  <p>{formatarCentavosParaReal(item.value)}</p>
+                </div>
+                <div>
+                  <p>{new Date(item.data).toLocaleTimeString("pt-BR")}</p>
+                  <p>{new Date(item.data).toLocaleDateString("pt-BR")}</p>
+                </div>
               </div>
             ))
           )}

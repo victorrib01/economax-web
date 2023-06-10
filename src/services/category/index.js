@@ -33,7 +33,12 @@ export async function getUserCategories(setState, id, label = false) {
           };
         })
       );
-      return;
+      return response.data.map((item) => {
+        return {
+          id: item.id,
+          label: item.categoria,
+        };
+      });
     }
     setState(
       response.data.map((item) => {
@@ -43,6 +48,12 @@ export async function getUserCategories(setState, id, label = false) {
         };
       })
     );
+    return response.data.map((item) => {
+      return {
+        id: item.id,
+        name: item.categoria,
+      };
+    });
   } catch (err) {
     console.error(err);
   }

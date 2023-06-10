@@ -22,7 +22,7 @@ export default function SpendsByCategoryContent() {
     setLoading(true);
     try {
       const response = await api.post("/gastos_categoria_usuario", {
-        dias: value.value,
+        dias: value.value || "",
         id_usuario: cookies.id,
       });
       setResults(
@@ -49,7 +49,7 @@ export default function SpendsByCategoryContent() {
         <SelectComponent
           options={options}
           onChange={setValue}
-          defaultValue={value}
+          defaultValue={{ value: "", label: "Último mês" }}
           placeholder="Selecione algum período"
         />
       </div>

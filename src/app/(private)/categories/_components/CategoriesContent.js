@@ -49,6 +49,10 @@ export default function CategoriesContent() {
 
   const handleAssingCategories = async () => {
     setLoading(true);
+    if (!selectedItems.length > 0) {
+      setLoading(false);
+      return alert("selecione ao menos uma categoria para cadastrar");
+    }
     try {
       const response = await assignCategory({
         id: cookies.id,
@@ -117,7 +121,13 @@ export default function CategoriesContent() {
             registered: isRegistered,
           };
         })
-        .sort((a, b) => a.registered - b.registered);
+        .sort((a, b) => {
+          if (a.registered === b.registered) {
+            return a.name.localeCompare(b.name); // Mantém a ordem alfabética
+          }
+          return a.registered ? 1 : -1; // Coloca os não registrados primeiro
+        });
+      // .sort((a, b) => a.registered - b.registered);
 
       setAllCategories(updatedCategories);
       setLoading(false);

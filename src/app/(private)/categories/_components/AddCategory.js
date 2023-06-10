@@ -31,7 +31,10 @@ export default function AddCategory({ value, fetchAll, setAllCategories }) {
             ...prevState,
             { id: categoryId, name: value },
           ]);
-          alert("Categoria criada e ja associada ao seu perfil!");
+          setTimeout(
+            () => alert("Categoria criada e ja associada ao seu perfil!"),
+            200
+          );
         }
       }
       setLoading(false);
