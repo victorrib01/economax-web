@@ -2,35 +2,44 @@
 import Loader from "@/components/Loader";
 import SelectComponent from "@/components/Select";
 import { useAuth } from "@/contexts/auth";
-import api from "@/services/api";
+import { getSpendsByCategory } from "@/services/spends";
+import { getAllMonths } from "@/utils/dates";
 import formatarCentavosParaReal from "@/utils/formatters/formatCentavosToReal";
+import moment from "moment-timezone";
 import { useEffect, useState } from "react";
+
+const monthOptions = getAllMonths().map((item) => ({
+  label: item.name,
+  value: item.number,
+}));
+
+const yearOptions = [{ label: "2023", value: 2023 }];
 
 export default function SpendsByCategoryContent() {
   const { cookies } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState("");
+  const [monthValue, setMonthValue] = useState(
+    monthOptions.filter((item) => item.value == moment().month() + 1)[0]
+  );
+  const [yearValue, setYearValue] = useState(yearOptions[0]);
   const [results, setResults] = useState([]);
-
-  const options = [
-    { value: "30", label: "30 dias" },
-    { value: "90", label: "90 dias" },
-    { value: "", label: "Último mês" },
-  ];
 
   async function getData() {
     setLoading(true);
     try {
-      const response = await api.post("/gastos_categoria_usuario", {
-        dias: value.value || "",
-        id_usuario: cookies.id,
+      const response = await getSpendsByCategory({
+        month: monthValue.value || "",
+        year: yearValue.value || "2023",
+        jwt: cookies.jwt,
       });
-      setResults(
-        Object.entries(response.data).map(([category, value]) => ({
+
+      const formattedResponse = Object.entries(response.data).map(
+        ([category, value]) => ({
           category,
           value,
-        }))
+        })
       );
+      setResults(formattedResponse);
     } catch (err) {
       console.error(err);
     }
@@ -41,20 +50,26 @@ export default function SpendsByCategoryContent() {
     if (cookies) {
       getData();
     }
-  }, [value, cookies]);
+  }, [monthValue, yearValue, cookies]);
 
   return (
     <div className="h-full flex flex-col">
-      <div className="h-[10%]">
+      <div className="h-[20%]">
         <SelectComponent
-          options={options}
-          onChange={setValue}
+          options={monthOptions}
+          onChange={setMonthValue}
           defaultValue={{ value: "", label: "Último mês" }}
-          placeholder="Selecione algum período"
+          placeholder="Selecione algum mês"
+        />
+        <SelectComponent
+          options={yearOptions}
+          onChange={setYearValue}
+          defaultValue={{ value: "2023", label: "2023" }}
+          placeholder="Selecione algum ano"
         />
       </div>
       <div className="my-2 flex-grow overflow-y-auto">
-        <p>{value.value ? `Últimos ${value.value} dias` : "Último mês"}</p>
+        {/* <p>{value.value ? `Últimos ${value.value} dias` : "Último mês"}</p> */}
         <div id="list">
           {loading ? (
             <Loader />

@@ -14,10 +14,9 @@ export default function ProfileContent() {
     router.push("/");
   }
   return (
-    <div className="flex flex-col h-full p-8 items-center justify-between">
+    <div className="flex flex-col h-full p-8 items-center justify-around">
       {cookies ? (
         <>
-          <p>ID: {cookies.id}</p>
           <p>usuario: {cookies.user}</p>
           <Button title={"Sair"} onClick={() => signOut()} />
           <p>v{process.env.VERSION}</p>

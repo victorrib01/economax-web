@@ -5,8 +5,8 @@ import Image from "next/image";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import Container from "@/components/Container";
-import api from "@/services/api";
 import { setLoginCookie } from "@/utils/cookies/loginCookie";
+import { registerUser } from "@/services/auth";
 
 export default function SignUp() {
   const router = useRouter();
@@ -32,9 +32,9 @@ export default function SignUp() {
           "A senhas não coincidem, tente novamente"
         );
 
-      const response = await api.post("/cadastro", {
-        usuario: form.user,
-        senha: form.password,
+      const response = await registerUser({
+        user: form.user,
+        password: form.password,
       });
 
       if (response.data["Message"] === "Usuário cadastrado com sucesso!") {

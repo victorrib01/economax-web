@@ -1,6 +1,7 @@
 import api from "../api";
 
-export async function getAllCategories(setState) {
+// categorias_despesas_geral
+export async function getAllCategories() {
   try {
     const response = await api.get("/categorias_despesas_geral");
     const formattedDate = response.data.map((item) => {
@@ -9,30 +10,23 @@ export async function getAllCategories(setState) {
         name: item.categoria,
       };
     });
-    setState(formattedDate);
+    return formattedDate;
   } catch (err) {
     console.error(err);
   }
 }
 
-export async function getUserCategories(setState, id, label = false) {
+// busca_categorias_despesas_geral_usuario
+export async function getUserCategories(jwt, label = false) {
   try {
     const response = await api.post(
       "/busca_categorias_despesas_geral_usuario",
       {
-        id_usuario: id,
+        jwt: jwt,
       }
     );
 
     if (label) {
-      setState(
-        response.data.map((item) => {
-          return {
-            id: item.id,
-            label: item.categoria,
-          };
-        })
-      );
       return response.data.map((item) => {
         return {
           id: item.id,
@@ -40,14 +34,7 @@ export async function getUserCategories(setState, id, label = false) {
         };
       });
     }
-    setState(
-      response.data.map((item) => {
-        return {
-          id: item.id,
-          name: item.categoria,
-        };
-      })
-    );
+
     return response.data.map((item) => {
       return {
         id: item.id,
@@ -59,7 +46,8 @@ export async function getUserCategories(setState, id, label = false) {
   }
 }
 
-export async function assignCategory({ id, fetchData, selectedItems }) {
+// cadastro_categorias_usuario
+export async function assignCategory({ jwt, fetchData, selectedItems }) {
   try {
     const categorias = selectedItems.map((item) => {
       return {
@@ -68,7 +56,7 @@ export async function assignCategory({ id, fetchData, selectedItems }) {
     });
 
     const response = await api.post("/cadastro_categorias_usuario", {
-      id_usuario: id,
+      jwt: jwt,
       categorias,
     });
 
@@ -80,10 +68,11 @@ export async function assignCategory({ id, fetchData, selectedItems }) {
   }
 }
 
-export async function createCategory({ id, category }) {
+// cadastro_categorias
+export async function createCategory({ jwt, category }) {
   try {
     const response = await api.post("/cadastro_categorias", {
-      id_usuario: id,
+      jwt: jwt,
       categoria: category.trim(),
     });
 

@@ -34,7 +34,7 @@ export default function LayoutPage({ loginCookie, children }) {
   };
 
   useEffect(() => {
-    const token = loginCookie?.id; // Obtenha o token do cookie ou de outro local
+    const token = loginCookie?.jwt; // Obtenha o token do cookie ou de outro local
     if (!token) {
       router.push("/"); // Redirecione para a página de login
     } else {
@@ -92,7 +92,7 @@ export default function LayoutPage({ loginCookie, children }) {
                 {backButtonActive && <BackButton />}
               </div>
               <div className={"h-[85%] w-full overflow-y-hidden p-4"}>
-                {loginCookie?.id ? children : <Loader />}
+                {loginCookie?.jwt ? children : <Loader />}
               </div>
               <div className="h-[10%] w-full">
                 <Menu />

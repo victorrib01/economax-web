@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import SelectComponent from "@/components/Select";
-import api from "@/services/api";
 import { convertToCents } from "@/utils/formatters/convertToCents";
 import { useAuth } from "@/contexts/auth";
 import { getUserCategories } from "@/services/category";
+import { registerSpend } from "@/services/spends";
 
 export default function RegisterForm({ getLast5Records }) {
   const { cookies } = useAuth();
@@ -38,16 +38,12 @@ export default function RegisterForm({ getLast5Records }) {
       return alert("Preencha todos os campos!");
     try {
       setLoading(true);
-      const response = await api.post("/cadastro_gastos_usuario", {
-        id_usuario: cookies.id,
-        usuario: cookies.user,
-        gastos: [
-          {
-            id_categoria: category.value,
-            valor: `${convertToCents(value)}`,
-            descricao: description,
-          },
-        ],
+      const response = await registerSpend({
+        user: cookies.user,
+        user_id: cookies.id,
+        category_id: category.value,
+        description,
+        value,
       });
       if (response.data.message === "Gastos inseridos com sucesso!") {
         setTimeout(() => getLast5Records(), 1000);
@@ -66,15 +62,15 @@ export default function RegisterForm({ getLast5Records }) {
   async function getCategories() {
     setLoading(true);
     try {
-      const res = await getUserCategories(() => {}, cookies.id, true);
-      setOptions(
-        res.map((item) => {
-          return {
-            value: item.id,
-            label: item.label,
-          };
-        })
-      );
+      const res = await getUserCategories(cookies.jwt, true);
+      console.log(res);
+      // .map((item) => {
+      //   return {
+      //     value: item.id,
+      //     label: item.label,
+      //   };
+      // });
+      // setOptions(res);
       setLoading(false);
       return Promise.resolve();
     } catch (err) {

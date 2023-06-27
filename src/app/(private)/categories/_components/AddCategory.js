@@ -14,14 +14,14 @@ export default function AddCategory({ value, fetchAll, setAllCategories }) {
     setLoading(true);
     try {
       const response = await createCategory({
-        id: cookies.id,
+        jwt: cookies.jwt,
         category: value,
       });
       const categoryId = response.data.id;
 
       if (categoryId) {
         const res = await assignCategory({
-          id: cookies.id,
+          jwt: cookies.jwt,
           selectedItems: [{ id: categoryId }],
           fetchData: fetchAll,
         });

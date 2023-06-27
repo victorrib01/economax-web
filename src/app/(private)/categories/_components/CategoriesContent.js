@@ -26,11 +26,14 @@ export default function CategoriesContent() {
   const [allCategories, setAllCategories] = useState([]);
   const [registeredCategories, setRegisteredCategories] = useState([]);
 
-  const fetchAllCategories = async () =>
-    await getAllCategories(setAllCategories);
+  const fetchAllCategories = async () => {
+    const res = await getAllCategories();
+    setAllCategories(res);
+  };
 
   const fetchUserCategories = async () => {
-    await getUserCategories(setRegisteredCategories, cookies.id);
+    const res = await getUserCategories(cookies.jwt);
+    setRegisteredCategories(res);
     setLoading(false);
   };
 
@@ -55,7 +58,7 @@ export default function CategoriesContent() {
     }
     try {
       const response = await assignCategory({
-        id: cookies.id,
+        jwt: cookies.jwt,
         fetchData: fetchUserCategories,
         selectedItems,
       });

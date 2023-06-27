@@ -21,7 +21,7 @@ module.exports = (phase) => {
       return "VERSION:not (isDev,isProd && !isStaging,isProd && isStaging)";
     })(),
     API_URL: (() => {
-      if (isDev) return "https://economax.onrender.com";
+      if (isDev) return "https://economax-dev.onrender.com";
       if (isProd) return "https://economax.onrender.com";
       if (isStaging) return "https://economax.onrender.com";
       return "API_URL:not (isDev,isProd && !isStaging,isProd && isStaging)";

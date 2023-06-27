@@ -1,70 +1,43 @@
 "use client";
-import api from "@/services/api";
 import LastRegisters from "./LastRegisters";
 import RegisterForm from "./RegisterForm";
 import { useState } from "react";
 import { useAuth } from "@/contexts/auth";
+import { getLastSpends } from "@/services/spends";
 
 export default function HomeContent() {
   const { cookies } = useAuth();
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
 
-  function parseDate(dateString) {
-    const [date, time] = dateString.split(" ");
-    const [year, month, day] = date.split("-").map(Number);
-    const [hours, minutes, seconds] = time.split(":").map(Number);
-
-    const dateFormatted = new Date(
-      year,
-      month - 1,
-      day,
-      hours,
-      minutes,
-      seconds
-    );
-    return dateFormatted;
-  }
-  async function getLast5Records() {
-    setLoading(true);
-    try {
-      const response = await api.post("/ultimas_despesas_usuario", {
-        id_usuario: cookies.id,
-        usuario: cookies.user,
-        dias: "2",
-      });
-
-      const sortedData = response.data
-        .map((item) => {
-          return {
-            data: parseDate(item.data),
-            category: item.categoria,
-            // MOCK
-            value: item.valor,
-            // value: Math.floor(Math.random() * (99999 - 50 + 1) + 50),
-          };
-        })
-        .sort((a, b) => b.data - a.data);
-      setResults(sortedData);
-      setLoading(false);
-    } catch (err) {
-      console.error("getLast5Records", err);
-      setLoading(false);
-    }
-  }
+  async function getLast5Records() {}
+  //   setLoading(true);
+  //   try {
+  //     const response = await getLastSpends({
+  //       jwt: cookies.jwt,
+  //       mes: 6,
+  //       year: 2023,
+  //     });
+  //     setResults(response);
+  //     setLoading(false);
+  //   } catch (err) {
+  //     console.error("getLast5Records", err);
+  //     setLoading(false);
+  //   }
+  // }
   return (
     <>
       <div className="flex w-full items-center justify-center h-[70%]">
         <RegisterForm getLast5Records={getLast5Records} />
       </div>
-      <div className="flex w-full items-center justify-center h-[30%]">
+      {/* <div className="flex w-full items-center justify-center h-[30%]">
         <LastRegisters
           cookies={cookies}
           getLast5Records={getLast5Records}
           loading={loading}
           results={results}
         />
-      </div>
+      </div> */}
     </>
   );
 }

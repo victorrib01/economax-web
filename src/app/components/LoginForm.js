@@ -8,7 +8,7 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { useRouter } from "next/navigation";
 import { setLoginCookie } from "@/utils/cookies/loginCookie";
-import api from "@/services/api";
+import { login } from "@/services/auth";
 
 export function LoginForm({ loginCookie }) {
   const router = useRouter();
@@ -31,13 +31,18 @@ export function LoginForm({ loginCookie }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await api.post(`/login`, {
-        usuario: form.username,
-        senha: form.password,
+      const response = await login({
+        username: form.username,
+        password: form.password,
       });
+
       const res = response.data;
+
       if (res["Message"] == "Usuário autenticado com sucesso!") {
-        setLoginCookie({ user: form.username, id: res.id_usuario });
+        setLoginCookie({
+          user: form.username,
+          jwt: res.jwt,
+        });
       } else {
         alert(res["Message"]);
       }
@@ -51,7 +56,7 @@ export function LoginForm({ loginCookie }) {
   };
 
   useEffect(() => {
-    const token = loginCookie?.id; // Obtenha o token do cookie ou de outro local
+    const token = loginCookie?.jwt; // Obtenha o token do cookie ou de outro local
     if (token) {
       router.push("/home"); // Redirecione para a página de login
     }
